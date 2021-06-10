@@ -1,7 +1,6 @@
 import { put, takeEvery, all, call } from 'redux-saga/effects';
-import getMethod from './api/getMethod';
-
-const url = 'http://localhost:8080/group/list';
+import axios from 'axios';
+import * as api from './api/getMethod';
 
 export const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
@@ -15,13 +14,11 @@ export function* watchIncrementAsync() {
 }
 
 export function* fetchProducts() {
-  const products = yield call(getMethod);
-  if (products) {
-    console.log(products);
-    console.log('-----fetch succeed');
-  } else {
-    console.log(products);
-    console.log('-----fetch failed');
+  try {
+    const { data, error } = yield call(api.getMethod);
+    console.log(data);
+  } catch (e) {
+    console.error(e);
   }
 }
 
