@@ -1,5 +1,4 @@
 import { put, takeEvery, all, call } from 'redux-saga/effects';
-import axios from 'axios';
 import * as api from './api/getMethod';
 
 export const delay = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -15,10 +14,10 @@ export function* watchIncrementAsync() {
 
 export function* fetchProducts() {
   try {
-    const { data, error } = yield call(api.getMethod);
-    console.log(data);
-  } catch (e) {
-    console.error(e);
+    const products = yield call(api.getMethod);
+    yield put({ type: 'PRODUCTS_RECEIVED', payload: products });
+  } catch (error) {
+    yield put({ type: 'PRODUCTS_REQUEST_FAILED', payload: error });
   }
 }
 
